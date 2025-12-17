@@ -3,363 +3,183 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Klarifikasi Resmi Lana</title>
-    <!-- Font Keren -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
-    <!-- Icon -->
-    <script src="https://kit.fontawesome.com/4f3ce16e3e.js" crossorigin="anonymous"></script>
-
+    <title>Pemberitahuan Penting: Hak Emosional Anak</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
-        /* --- RESET & BASIC --- */
-        :root {
-            --bg: #111;
-            --card-bg: #1e1e1e;
-            --text: #eee;
-            --accent: #3498db; /* Biru biar netral */
-            --danger: #e74c3c;
-        }
-
         body {
-            margin: 0;
-            padding: 0;
-            background-color: var(--bg);
-            color: var(--text);
-            font-family: 'Montserrat', sans-serif;
-            overflow: hidden; /* Biar gak bisa scroll, harus pake tombol */
+            font-family: 'Inter', sans-serif;
+            background-color: #f8f9fa;
+        }
+        .serif-font {
+            font-family: 'Merriweather', serif;
+        }
+        .news-container {
+            max-width: 800px;
+            margin: 2rem auto;
+            background: white;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+            border-top: 6px solid #1a202c;
+        }
+        .slide-content {
+            min-height: 200px;
             display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
-
-        /* --- CONTAINER UTAMA --- */
-        .slide-container {
-            width: 90%;
-            max-width: 500px;
-            height: 80vh; /* Tinggi fix biar kayak kartu */
-            position: relative;
-            background: var(--card-bg);
-            border-radius: 20px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
-            border: 1px solid #333;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-        }
-
-        /* --- PROGRESS BAR --- */
-        .progress-bar {
-            height: 5px;
-            background: #333;
-            width: 100%;
-            position: absolute;
-            top: 0;
-        }
-        .progress-fill {
-            height: 100%;
-            background: var(--accent);
-            width: 20%; /* Awal */
-            transition: width 0.3s ease;
-        }
-
-        /* --- SLIDES --- */
-        .slide {
-            flex: 1;
-            display: none; /* Default hidden */
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            padding: 30px;
             text-align: center;
-            animation: fadeIn 0.5s ease;
         }
-
-        .slide.active {
-            display: flex; /* Cuma yang active yang muncul */
+        .line-clamp-3 {
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;  
+            overflow: hidden;
         }
-
-        /* --- TYPOGRAPHY PER SLIDE --- */
-        h1 {
-            font-weight: 900;
-            text-transform: uppercase;
-            font-size: 2rem;
-            margin-bottom: 10px;
-            color: white;
+        .fade-in {
+            animation: fadeIn 0.5s ease-in;
         }
-
-        p {
-            font-size: 1rem;
-            line-height: 1.6;
-            color: #ccc;
-        }
-
-        .highlight-name {
-            font-size: 2.5rem;
-            font-weight: 900;
-            color: var(--accent);
-            display: block;
-            margin: 20px 0;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            text-shadow: 0 0 10px rgba(52, 152, 219, 0.3);
-        }
-
-        .warning-text {
-            color: var(--danger);
-            font-weight: bold;
-            border: 2px solid var(--danger);
-            padding: 10px;
-            border-radius: 5px;
-            display: inline-block;
-            margin-bottom: 20px;
-            transform: rotate(-2deg);
-        }
-
-        .icon-big {
-            font-size: 4rem;
-            margin-bottom: 20px;
-            color: #555;
-        }
-
-        /* --- NAVIGATION BUTTONS --- */
-        .nav-area {
-            height: 80px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0 20px;
-            border-top: 1px solid #333;
-            background: #151515;
-        }
-
-        .btn-nav {
-            padding: 10px 20px;
-            border: none;
-            background: transparent;
-            color: #777;
-            font-family: 'Montserrat', sans-serif;
-            font-weight: bold;
-            cursor: pointer;
-            transition: 0.3s;
-            font-size: 1rem;
-        }
-
-        .btn-nav:hover {
-            color: white;
-        }
-
-        .btn-next {
-            background: var(--text);
-            color: var(--bg);
-            border-radius: 50px;
-            padding: 10px 25px;
-        }
-        
-        .btn-next:hover {
-            background: var(--accent);
-            color: white;
-            transform: translateX(5px);
-        }
-
-        /* --- TOMBOL AKSI (Slide Terakhir) --- */
-        .action-buttons {
-            display: flex;
-            gap: 15px;
-            width: 100%;
-            margin-top: 20px;
-        }
-        
-        .btn-action {
-            flex: 1;
-            padding: 15px;
-            border: none;
-            border-radius: 10px;
-            font-weight: bold;
-            font-size: 1rem;
-            cursor: pointer;
-            text-decoration: none;
-            color: white;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .btn-yes {
-            background: var(--accent);
-            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.4);
-        }
-
-        .btn-no {
-            background: #333;
-            color: #888;
-            position: relative;
-        }
-
-        /* --- ANIMATIONS --- */
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
-
-        @keyframes shake {
-            0% { transform: translateX(0); }
-            25% { transform: translateX(-5px); }
-            50% { transform: translateX(5px); }
-            75% { transform: translateX(-5px); }
-            100% { transform: translateX(0); }
-        }
-
     </style>
 </head>
-<body>
+<body class="p-4 md:p-8">
 
-    <div class="slide-container">
-        <!-- Progress Bar -->
-        <div class="progress-bar">
-            <div class="progress-fill" id="progress"></div>
-        </div>
-
-        <!-- SLIDE 1: Intro -->
-        <div class="slide active" id="slide-1">
-            <div class="warning-text">⚠️ SIARAN PERS</div>
-            <h1>PENGUMUMAN PENTING</h1>
-            <p>Harap dibaca dengan seksama oleh pihak yang bersangkutan.</p>
-            <i class="fas fa-bullhorn icon-big" style="margin-top: 30px;"></i>
-            <p style="font-size: 0.8rem; color: #666; margin-top: auto;">Dokumen No: 001/LN/2025</p>
-        </div>
-
-        <!-- SLIDE 2: Target -->
-        <div class="slide" id="slide-2">
-            <p>Website ini dibuat secara sadar, tanpa paksaan, agar <b>seluruh Indonesia</b> (dan dunia) tahu bahwa...</p>
-            <p>Seorang warga bernama <b>Lana</b> ingin menyampaikan permohonan maaf resmi kepada:</p>
-            <span class="highlight-name">ANJANI</span>
-            <p>Atas insiden yang terjadi baru-baru ini.</p>
-        </div>
-
-        <!-- SLIDE 3: Pengakuan -->
-        <div class="slide" id="slide-3">
-            <i class="fas fa-hand-holding-heart icon-big" style="color: var(--danger)"></i>
-            <h1>SAYA MENGAKU SALAH</h1>
-            <p>"Gua sadar gua salah. Gua teledor. Gua bikin lu kesel. Gua akuin itu."</p>
-            <p style="margin-top: 20px; font-style: italic; color: #888;">(Lana, 2025)</p>
-        </div>
-
-        <!-- SLIDE 4: Detail Janji -->
-        <div class="slide" id="slide-4">
-            <i class="fas fa-gas-pump icon-big" style="color: #f1c40f"></i>
-            <h1>KLARIFIKASI INSIDEN</h1>
-            <p>Terkait insiden kehabisan bensin, dengan ini saya berjanji:</p>
-            <div style="background: rgba(255,255,255,0.05); padding: 15px; border-radius: 10px; border-left: 4px solid var(--accent); text-align: left; margin: 20px 0;">
-                <b>1. Tidak akan ngebut lagi.</b><br>
-                <b>2. Selalu cek indikator bensin.</b><br>
-                <b>3. Tidak bikin panik penumpang.</b>
+    <div class="news-container p-6 md:p-12 rounded-sm">
+        <!-- Header Berita -->
+        <header class="border-b-2 border-gray-900 pb-4 mb-8">
+            <div class="flex justify-between items-end">
+                <div>
+                    <h1 class="text-3xl font-bold serif-font uppercase tracking-tighter">Warta Advokasi</h1>
+                    <p class="text-xs text-gray-500 font-semibold italic">Siaran Pers Resmi: Urusan Kesejahteraan Psikologis</p>
+                </div>
+                <div class="text-right">
+                    <p class="text-sm font-bold" id="current-date"></p>
+                    <p class="text-xs text-red-600 font-bold uppercase tracking-widest">Pemberitahuan Penting</p>
+                </div>
             </div>
-            <p style="font-size: 0.9rem;">"Janji ga bakal ngebut sampe ngabisin bensin lagi. Kapok."</p>
-        </div>
+        </header>
 
-        <!-- SLIDE 5: Action -->
-        <div class="slide" id="slide-5">
-            <h1>KEPUTUSAN</h1>
-            <p>Bola sekarang ada di tangan Anjani.</p>
-            <p>Apakah permohonan maaf Lana diterima?</p>
-            
-            <div class="action-buttons">
-                <!-- Ganti Nomor WA Disini -->
-                <a href="https://wa.me/628984577538?text=aduh%20gua%2C%20harus%20maafin%20rakha%20sih%20yaudah%20deh%20dimaafin%21" class="btn-action btn-yes">
-                    <i class="fab fa-whatsapp" style="margin-right: 10px;"></i> DITERIMA
-                </a>
-                
-                <button class="btn-action btn-no" id="btn-tolak" onmouseover="kabur()" onclick="kabur()">
-                    DITOLAK
+        <!-- Main Content (Slide System) -->
+        <main class="py-12">
+            <div id="slide-container" class="slide-content fade-in">
+                <!-- Slides will be injected here by JS -->
+            </div>
+        </main>
+
+        <!-- Navigation -->
+        <footer class="mt-12 border-t border-gray-100 pt-6 flex flex-col items-center">
+            <div class="flex space-x-4 mb-4">
+                <button onclick="prevSlide()" id="prevBtn" class="px-6 py-2 border border-gray-300 rounded text-sm font-semibold hover:bg-gray-50 disabled:opacity-30 transition-all">
+                    &larr; Kembali
+                </button>
+                <button onclick="nextSlide()" id="nextBtn" class="px-6 py-2 bg-gray-900 text-white rounded text-sm font-semibold hover:bg-gray-800 transition-all">
+                    Selanjutnya &rarr;
                 </button>
             </div>
-        </div>
-
-        <!-- NAVIGATION AREA -->
-        <div class="nav-area">
-            <button class="btn-nav" id="btn-prev" onclick="changeSlide(-1)" style="opacity: 0; pointer-events: none;">Kembali</button>
-            <span style="font-size: 0.8rem; color: #555;" id="page-indicator">1 / 5</span>
-            <button class="btn-nav btn-next" id="btn-next" onclick="changeSlide(1)">Lanjut <i class="fas fa-arrow-right"></i></button>
-        </div>
+            <div class="flex space-x-2">
+                <div id="progress-dots" class="flex space-x-1">
+                    <!-- Dots will be injected here -->
+                </div>
+            </div>
+            <p class="text-[10px] text-gray-400 mt-8 uppercase tracking-widest">Dokumen ini bersifat edukatif untuk kesehatan mental keluarga</p>
+        </footer>
     </div>
 
     <script>
+        const slides = [
+            {
+                text: "Aku memang bukanlah insan yang sempurna,<br>dan aku tidaklah terlepas dari kesalahan,",
+                sub: "Namun apakah aku tidak pantas mendapat dukungan?"
+            },
+            {
+                text: "Apakah manusia seperti diriku tidak layak<br>mendapatkan dukungan emosional",
+                sub: "dari orang tua ku sendiri?"
+            },
+            {
+                text: "UU Perlindungan Anak No. 35/2014 Pasal 26:<br>Orang tua berkewajiban mengasuh, mendidik,",
+                sub: "serta melindungi kepentingan terbaik bagi anak."
+            },
+            {
+                text: "Hukum Agama menegaskan anak adalah amanah.<br>Orang tua wajib menghormati hak-hak anak",
+                sub: "dan dilarang bertindak sewenang-wenang."
+            },
+            {
+                text: "Kutipan Soe Hok Gie:<br>'Orang tua bukanlah dewa,'",
+                sub: "'dan anak bukanlah kerbau yang selalu salah.'"
+            },
+            {
+                text: "Setiap luka batinmu memiliki hak untuk sembuh.<br>Dukungan emosional bukanlah sebuah pilihan,",
+                sub: "melainkan kebutuhan dasar setiap jiwa anak."
+            }
+        ];
+
         let currentSlide = 0;
-        const slides = document.querySelectorAll('.slide');
-        const progressFill = document.getElementById('progress');
-        const pageIndicator = document.getElementById('page-indicator');
-        const btnPrev = document.getElementById('btn-prev');
-        const btnNext = document.getElementById('btn-next');
-        const totalSlides = slides.length;
 
-        function updateUI() {
-            // Update Progress Bar
-            const progress = ((currentSlide + 1) / totalSlides) * 100;
-            progressFill.style.width = `${progress}%`;
+        function renderSlide() {
+            const container = document.getElementById('slide-container');
+            const dotsContainer = document.getElementById('progress-dots');
+            const data = slides[currentSlide];
             
-            // Update Text Indicator
-            pageIndicator.innerText = `${currentSlide + 1} / ${totalSlides}`;
+            // Animation reset
+            container.classList.remove('fade-in');
+            void container.offsetWidth; // trigger reflow
+            container.classList.add('fade-in');
 
-            // Handle Tombol Back
-            if (currentSlide === 0) {
-                btnPrev.style.opacity = '0';
-                btnPrev.style.pointerEvents = 'none';
+            container.innerHTML = `
+                <h2 class="text-xl md:text-2xl serif-font font-bold leading-relaxed mb-4">
+                    ${data.text}
+                </h2>
+                <p class="text-gray-600 italic text-lg">
+                    ${data.sub}
+                </p>
+            `;
+
+            // Update buttons
+            document.getElementById('prevBtn').disabled = currentSlide === 0;
+            if (currentSlide === slides.length - 1) {
+                document.getElementById('nextBtn').innerText = "Selesai";
             } else {
-                btnPrev.style.opacity = '1';
-                btnPrev.style.pointerEvents = 'auto';
+                document.getElementById('nextBtn').innerHTML = "Selanjutnya &rarr;";
             }
 
-            // Handle Tombol Next
-            if (currentSlide === totalSlides - 1) {
-                btnNext.style.display = 'none'; // Ilang pas slide terakhir
+            // Render dots
+            dotsContainer.innerHTML = slides.map((_, i) => `
+                <div class="h-1.5 w-1.5 rounded-full ${i === currentSlide ? 'bg-gray-900' : 'bg-gray-200'}"></div>
+            `).join('');
+        }
+
+        function nextSlide() {
+            if (currentSlide < slides.length - 1) {
+                currentSlide++;
+                renderSlide();
             } else {
-                btnNext.style.display = 'block';
-                btnNext.innerHTML = 'Lanjut <i class="fas fa-arrow-right"></i>';
+                // Optional: Action when finished
+                const container = document.getElementById('slide-container');
+                container.innerHTML = `
+                    <h2 class="text-2xl font-bold serif-font">Terima kasih telah membaca.</h2>
+                    <p class="mt-4 text-gray-500">Anda tidak sendirian. Mari saling menguatkan.</p>
+                    <button onclick="location.reload()" class="mt-6 text-xs underline uppercase font-bold">Baca Ulang</button>
+                `;
+                document.getElementById('nextBtn').style.display = 'none';
+                document.getElementById('prevBtn').style.display = 'none';
             }
         }
 
-        function changeSlide(direction) {
-            // Hide current
-            slides[currentSlide].classList.remove('active');
-            
-            // Calculate next
-            currentSlide += direction;
-
-            // Boundary checks
-            if (currentSlide < 0) currentSlide = 0;
-            if (currentSlide >= totalSlides) currentSlide = totalSlides - 1;
-
-            // Show new
-            slides[currentSlide].classList.add('active');
-
-            updateUI();
+        function prevSlide() {
+            if (currentSlide > 0) {
+                currentSlide--;
+                renderSlide();
+            }
         }
 
-        // Fitur Tombol Kabur (Prank)
-        function kabur() {
-            const btnNo = document.getElementById('btn-tolak');
-            
-            // Random posisi
-            const x = Math.random() * (window.innerWidth - btnNo.offsetWidth - 50);
-            const y = Math.random() * (window.innerHeight - btnNo.offsetHeight - 50);
-            
-            // Karena tombol ada di dalam container flexbox, kita ubah position jadi fixed sementara
-            btnNo.style.position = 'fixed';
-            btnNo.style.left = `${Math.random() * 80}%`;
-            btnNo.style.top = `${Math.random() * 80}%`;
-            
-            // Ganti teks
-            const texts = ["YAKIN?", "JANGAN DONG", "CLICK ME IF U CAN", "PARAH SIH", "MAAFIN LAH"];
-            btnNo.innerText = texts[Math.floor(Math.random() * texts.length)];
-            btnNo.style.background = "#c0392b";
-            btnNo.style.color = "white";
-        }
+        // Set current date
+        const options = { year: 'numeric', month: 'long', day: 'numeric' };
+        document.getElementById('current-date').innerText = new Date().toLocaleDateString('id-ID', options);
 
-        // Initialize
-        updateUI();
-
+        // Initial render
+        renderSlide();
     </script>
 </body>
 </html>
