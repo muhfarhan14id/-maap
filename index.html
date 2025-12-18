@@ -3,183 +3,143 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pemberitahuan Penting: Hak Emosional Anak</title>
+    <title>PENGUMUMAN NASIONAL - OSIS//13/12</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
     <style>
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #f8f9fa;
+            background-color: #f8fafc;
         }
-        .serif-font {
-            font-family: 'Merriweather', serif;
+        .headline {
+            font-family: 'Playfair Display', serif;
         }
-        .news-container {
-            max-width: 800px;
-            margin: 2rem auto;
-            background: white;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
-            border-top: 6px solid #1a202c;
+        .breaking-news-gradient {
+            background: linear-gradient(90deg, #ef4444 0%, #b91c1c 100%);
         }
-        .slide-content {
-            min-height: 200px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-        }
-        .line-clamp-3 {
-            display: -webkit-box;
-            -webkit-line-clamp: 3;
-            -webkit-box-orient: vertical;  
-            overflow: hidden;
-        }
-        .fade-in {
-            animation: fadeIn 0.5s ease-in;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+        .document-card {
+            border-left: 4px solid #ef4444;
         }
     </style>
 </head>
-<body class="p-4 md:p-8">
+<body class="text-slate-900">
 
-    <div class="news-container p-6 md:p-12 rounded-sm">
-        <!-- Header Berita -->
-        <header class="border-b-2 border-gray-900 pb-4 mb-8">
-            <div class="flex justify-between items-end">
-                <div>
-                    <h1 class="text-3xl font-bold serif-font uppercase tracking-tighter">Warta Advokasi</h1>
-                    <p class="text-xs text-gray-500 font-semibold italic">Siaran Pers Resmi: Urusan Kesejahteraan Psikologis</p>
-                </div>
-                <div class="text-right">
-                    <p class="text-sm font-bold" id="current-date"></p>
-                    <p class="text-xs text-red-600 font-bold uppercase tracking-widest">Pemberitahuan Penting</p>
-                </div>
-            </div>
-        </header>
-
-        <!-- Main Content (Slide System) -->
-        <main class="py-12">
-            <div id="slide-container" class="slide-content fade-in">
-                <!-- Slides will be injected here by JS -->
-            </div>
-        </main>
-
-        <!-- Navigation -->
-        <footer class="mt-12 border-t border-gray-100 pt-6 flex flex-col items-center">
-            <div class="flex space-x-4 mb-4">
-                <button onclick="prevSlide()" id="prevBtn" class="px-6 py-2 border border-gray-300 rounded text-sm font-semibold hover:bg-gray-50 disabled:opacity-30 transition-all">
-                    &larr; Kembali
-                </button>
-                <button onclick="nextSlide()" id="nextBtn" class="px-6 py-2 bg-gray-900 text-white rounded text-sm font-semibold hover:bg-gray-800 transition-all">
-                    Selanjutnya &rarr;
-                </button>
-            </div>
-            <div class="flex space-x-2">
-                <div id="progress-dots" class="flex space-x-1">
-                    <!-- Dots will be injected here -->
-                </div>
-            </div>
-            <p class="text-[10px] text-gray-400 mt-8 uppercase tracking-widest">Dokumen ini bersifat edukatif untuk kesehatan mental keluarga</p>
-        </footer>
+    <!-- Top Breaking News Bar -->
+    <div class="breaking-news-gradient text-white py-2 px-4 text-sm font-semibold overflow-hidden whitespace-nowrap">
+        <div class="flex animate-marquee gap-8">
+            <span>🔴 BERITA TERKINI: PEMBERITAHUAN PENTING UNTUK SELURUH PENGURUS OSIS SE-INDONESIA</span>
+            <span>|</span>
+            <span>DOKUMEN RESMI OSIS//13/12 TELAH DIRILIS</span>
+            <span>|</span>
+            <span>HARAP SEGERA MELAKUKAN TINDAK LANJUT</span>
+        </div>
     </div>
 
-    <script>
-        const slides = [
-            {
-                text: "Aku memang bukanlah insan yang sempurna,<br>dan aku tidaklah terlepas dari kesalahan,",
-                sub: "Namun apakah aku tidak pantas mendapat dukungan?"
-            },
-            {
-                text: "Apakah manusia seperti diriku tidak layak<br>mendapatkan dukungan emosional",
-                sub: "dari orang tua ku sendiri?"
-            },
-            {
-                text: "UU Perlindungan Anak No. 35/2014 Pasal 26:<br>Orang tua berkewajiban mengasuh, mendidik,",
-                sub: "serta melindungi kepentingan terbaik bagi anak."
-            },
-            {
-                text: "Hukum Agama menegaskan anak adalah amanah.<br>Orang tua wajib menghormati hak-hak anak",
-                sub: "dan dilarang bertindak sewenang-wenang."
-            },
-            {
-                text: "Kutipan Soe Hok Gie:<br>'Orang tua bukanlah dewa,'",
-                sub: "'dan anak bukanlah kerbau yang selalu salah.'"
-            },
-            {
-                text: "Setiap luka batinmu memiliki hak untuk sembuh.<br>Dukungan emosional bukanlah sebuah pilihan,",
-                sub: "melainkan kebutuhan dasar setiap jiwa anak."
-            }
-        ];
+    <!-- Header / Logo Section -->
+    <header class="bg-white border-b border-slate-200 py-6">
+        <div class="container mx-auto px-4 flex flex-col items-center">
+            <h1 class="text-3xl font-black tracking-tighter text-red-600 italic headline">WARTA NASIONAL</h1>
+            <p class="text-xs text-slate-500 mt-1 uppercase tracking-widest font-bold">Informasi Terpercaya Untuk Negeri</p>
+            <div class="w-full h-[1px] bg-slate-200 mt-4"></div>
+            <div class="flex justify-between w-full mt-2 text-[10px] text-slate-400 font-bold uppercase tracking-tighter">
+                <span>Edisi Khusus Digital</span>
+                <span id="current-date">Kamis, 18 Desember 2025</span>
+                <span>Jakarta, Indonesia</span>
+            </div>
+        </div>
+    </header>
 
-        let currentSlide = 0;
-
-        function renderSlide() {
-            const container = document.getElementById('slide-container');
-            const dotsContainer = document.getElementById('progress-dots');
-            const data = slides[currentSlide];
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-8 max-w-3xl">
+        <article class="bg-white p-6 md:p-10 shadow-sm border border-slate-100 rounded-sm">
             
-            // Animation reset
-            container.classList.remove('fade-in');
-            void container.offsetWidth; // trigger reflow
-            container.classList.add('fade-in');
+            <!-- Category Tag -->
+            <span class="inline-block bg-red-100 text-red-700 text-[10px] font-bold px-2 py-1 mb-4 rounded uppercase">Pemberitahuan Resmi</span>
 
-            container.innerHTML = `
-                <h2 class="text-xl md:text-2xl serif-font font-bold leading-relaxed mb-4">
-                    ${data.text}
-                </h2>
-                <p class="text-gray-600 italic text-lg">
-                    ${data.sub}
+            <!-- Main Headline -->
+            <h2 class="headline text-3xl md:text-4xl leading-tight mb-6 font-bold">
+                Instruksi Nasional: Seluruh Pengurus OSIS Indonesia Diminta Segera Membuka Dokumen Rahasia
+            </h2>
+
+            <!-- Document Ref Box -->
+            <div class="document-card bg-slate-50 p-4 mb-8">
+                <p class="text-xs text-slate-500 uppercase font-bold tracking-wider mb-1">Referensi Dokumen:</p>
+                <p class="text-xl font-mono font-bold text-red-600">OSIS//13/12</p>
+            </div>
+
+            <!-- News Content -->
+            <div class="space-y-4 text-slate-700 leading-relaxed text-lg">
+                <p>
+                    <span class="font-bold">JAKARTA</span> — Berdasarkan koordinasi pusat, hari ini secara resmi diumumkan pemberitahuan yang ditujukan bagi seluruh elemen Organisasi Siswa Intra Sekolah (OSIS) di tingkat SMP dan SMA di seluruh wilayah kedaulatan Republik Indonesia.
                 </p>
-            `;
+                <p>
+                    Pengumuman ini bersifat mendesak dan mengharuskan setiap pengurus inti untuk memahami isi dari dokumen yang bersangkutan. Dokumen dengan kode <span class="bg-yellow-100 px-1 font-semibold text-slate-900">OSIS//13/12</span> memuat agenda strategis dan sinkronisasi data nasional yang akan menentukan arah kebijakan organisasi di periode mendatang.
+                </p>
+                <p>
+                    Perwakilan setiap sekolah diharapkan untuk segera mengakses portal lanjutan guna melakukan verifikasi kehadiran dan penerimaan instruksi teknis lebih lanjut.
+                </p>
+            </div>
 
-            // Update buttons
-            document.getElementById('prevBtn').disabled = currentSlide === 0;
-            if (currentSlide === slides.length - 1) {
-                document.getElementById('nextBtn').innerText = "Selesai";
-            } else {
-                document.getElementById('nextBtn').innerHTML = "Selanjutnya &rarr;";
-            }
+            <!-- Redirection Section -->
+            <div class="mt-12 pt-8 border-t border-slate-100 flex flex-col items-center">
+                <div class="text-center mb-6">
+                    <p class="text-sm font-semibold text-slate-500 mb-2">Klik tombol di bawah ini untuk mengakses dokumen penuh:</p>
+                </div>
 
-            // Render dots
-            dotsContainer.innerHTML = slides.map((_, i) => `
-                <div class="h-1.5 w-1.5 rounded-full ${i === currentSlide ? 'bg-gray-900' : 'bg-gray-200'}"></div>
-            `).join('');
+                <!-- Action Button -->
+                <button onclick="handleRedirect()" class="w-full md:w-auto bg-slate-900 hover:bg-red-600 text-white font-bold py-4 px-10 rounded-full transition-all duration-300 shadow-lg transform hover:-translate-y-1 active:scale-95 flex items-center justify-center gap-3">
+                    BUKA DOKUMEN SEKARANG
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                    </svg>
+                </button>
+                
+                <p class="mt-4 text-[11px] text-slate-400 italic">
+                    *Anda akan dialihkan ke server aman pusat data OSIS Nasional.
+                </p>
+            </div>
+        </article>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-100 py-8 text-center text-slate-400 text-xs">
+        <p>&copy; 2025 Warta Nasional Digital Newsroom. Hak Cipta Dilindungi.</p>
+    </footer>
+
+    <script>
+        // --- PENGATURAN REDIRECT ---
+        // Ubah URL di bawah ini ke domain yang Anda inginkan
+        const targetURL = "https://www.google.com"; 
+
+        function handleRedirect() {
+            // Tampilkan pesan loading sebelum redirect
+            const btn = document.querySelector('button');
+            btn.innerHTML = "Menghubungkan ke Server...";
+            btn.disabled = true;
+            btn.classList.add('opacity-75');
+
+            setTimeout(() => {
+                window.location.href = targetURL;
+            }, 800);
         }
 
-        function nextSlide() {
-            if (currentSlide < slides.length - 1) {
-                currentSlide++;
-                renderSlide();
-            } else {
-                // Optional: Action when finished
-                const container = document.getElementById('slide-container');
-                container.innerHTML = `
-                    <h2 class="text-2xl font-bold serif-font">Terima kasih telah membaca.</h2>
-                    <p class="mt-4 text-gray-500">Anda tidak sendirian. Mari saling menguatkan.</p>
-                    <button onclick="location.reload()" class="mt-6 text-xs underline uppercase font-bold">Baca Ulang</button>
-                `;
-                document.getElementById('nextBtn').style.display = 'none';
-                document.getElementById('prevBtn').style.display = 'none';
-            }
-        }
-
-        function prevSlide() {
-            if (currentSlide > 0) {
-                currentSlide--;
-                renderSlide();
-            }
-        }
-
-        // Set current date
-        const options = { year: 'numeric', month: 'long', day: 'numeric' };
+        // Set Real Date
+        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
         document.getElementById('current-date').innerText = new Date().toLocaleDateString('id-ID', options);
-
-        // Initial render
-        renderSlide();
     </script>
+
+    <style>
+        @keyframes marquee {
+            0% { transform: translateX(100%); }
+            100% { transform: translateX(-100%); }
+        }
+        .animate-marquee {
+            display: flex;
+            animation: marquee 20s linear infinite;
+        }
+        .animate-marquee:hover {
+            animation-play-state: paused;
+        }
+    </style>
 </body>
 </html>
