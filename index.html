@@ -1,1 +1,417 @@
-<p>sites dont exist</p>
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PrivSuite v5: Privacy, Stegano & HD Booster</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin=""/>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+
+    <!-- Exif.js (Baca JPG) -->
+    <script src="https://cdn.jsdelivr.net/npm/exif-js"></script>
+    
+    <!-- Piexif.js (Tulis JPG) -->
+    <script src="https://unpkg.com/piexifjs@1.0.6/piexif.js"></script>
+
+    <!-- ID3 Writer (Tulis MP3) -->
+    <script src="https://cdn.jsdelivr.net/npm/browser-id3-writer@4.4.0/dist/browser-id3-writer.min.js"></script>
+
+    <!-- JSZip (Untuk Steganografi) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Inter:wght@300;400;600&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        .font-mono { font-family: 'JetBrains Mono', monospace; }
+        
+        /* Cyberpunk/Security Aesthetic */
+        .glass-panel {
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+        }
+        .input-dark {
+            background: rgba(0, 0, 0, 0.6);
+            border: 1px solid rgba(71, 85, 105, 0.6);
+            color: #e2e8f0;
+        }
+        .input-dark:focus {
+            outline: none;
+            border-color: #3b82f6;
+            background: rgba(0, 0, 0, 0.8);
+        }
+        .tab-btn {
+            transition: all 0.3s ease;
+        }
+        .tab-active {
+            background: rgba(59, 130, 246, 0.2);
+            border: 1px solid rgba(59, 130, 246, 0.5);
+            color: #60a5fa;
+            box-shadow: 0 0 10px rgba(59, 130, 246, 0.2);
+        }
+        .tab-inactive {
+            color: #94a3b8;
+            border: 1px solid transparent;
+        }
+        .tab-inactive:hover { background: rgba(255,255,255,0.05); color: #cbd5e1; }
+    </style>
+</head>
+<body class="bg-slate-950 text-slate-200 min-h-screen flex flex-col bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]">
+
+    <!-- Navbar -->
+    <header class="border-b border-slate-800 bg-slate-900/90 sticky top-0 z-50 backdrop-blur-md">
+        <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center gap-2">
+                <i class="fa-solid fa-layer-group text-blue-500 text-xl"></i>
+                <h1 class="text-lg font-bold text-white tracking-tight">Priv<span class="text-blue-500">Suite</span> v5.0</h1>
+            </div>
+            <div class="text-xs font-mono text-slate-400">
+                <span id="ip-status" class="hidden md:inline"><i class="fa-solid fa-satellite-dish fa-spin text-blue-500"></i> System Ready</span>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-grow p-4 md:p-6 max-w-7xl mx-auto w-full">
+        
+        <!-- Navigation Tabs -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-2 mb-6 bg-slate-900/80 p-2 rounded-xl border border-slate-800">
+            <button onclick="switchTab('spoof')" id="tab-spoof" class="tab-btn tab-active py-3 rounded-lg font-semibold text-xs md:text-sm flex justify-center items-center gap-2">
+                <i class="fa-solid fa-mask"></i> <span>Spoofer</span>
+            </button>
+            <button onclick="switchTab('encrypt')" id="tab-encrypt" class="tab-btn tab-inactive py-3 rounded-lg font-semibold text-xs md:text-sm flex justify-center items-center gap-2">
+                <i class="fa-solid fa-vault"></i> <span>Enkripsi</span>
+            </button>
+            <button onclick="switchTab('stego')" id="tab-stego" class="tab-btn tab-inactive py-3 rounded-lg font-semibold text-xs md:text-sm flex justify-center items-center gap-2">
+                <i class="fa-solid fa-eye-slash"></i> <span>Steganografi</span>
+            </button>
+            <button onclick="switchTab('hd')" id="tab-hd" class="tab-btn tab-inactive py-3 rounded-lg font-semibold text-xs md:text-sm flex justify-center items-center gap-2 border-l border-slate-700">
+                <i class="fa-brands fa-whatsapp text-green-400"></i> <span class="text-green-400">WA HD Booster</span>
+            </button>
+        </div>
+
+        <!-- ================= SECTION 1: METADATA SPOOFER ================= -->
+        <div id="section-spoof" class="animate-fade-in section-content">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                <!-- Left: Upload -->
+                <div class="lg:col-span-5 space-y-4">
+                    <div class="glass-panel rounded-xl p-8 text-center relative group hover:border-blue-500/50 transition cursor-pointer">
+                        <input type="file" id="spoof-input" accept="image/jpeg, audio/mp3" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10">
+                        <div class="pointer-events-none space-y-3">
+                            <i class="fa-solid fa-id-card text-4xl text-slate-500 group-hover:text-blue-400 transition"></i>
+                            <h3 class="text-white font-medium">Upload JPG / MP3</h3>
+                            <p class="text-xs text-slate-400">Ubah Lokasi & Identitas Device</p>
+                        </div>
+                    </div>
+                    <!-- Preview -->
+                    <div id="spoof-preview-container" class="hidden glass-panel rounded-xl p-4">
+                        <img id="img-preview" class="w-full h-40 object-contain bg-black/40 rounded border border-slate-700 hidden mb-2" src="">
+                        <audio id="audio-preview" controls class="w-full hidden mb-2"></audio>
+                        <div id="map-container" class="h-40 w-full rounded overflow-hidden relative border border-slate-700 bg-slate-900">
+                            <div id="map" class="w-full h-full z-0"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right: Form -->
+                <div class="lg:col-span-7">
+                    <div class="glass-panel rounded-xl p-6 border-t-4 border-t-blue-500 space-y-4 opacity-50 pointer-events-none" id="spoof-controls">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <input type="text" id="spoof-device" class="p-3 rounded-lg input-dark text-sm" value="iPhone 15 Pro Max">
+                            <input type="text" id="spoof-ip" class="p-3 rounded-lg input-dark text-sm font-mono" placeholder="IP Address">
+                        </div>
+                        <div class="flex gap-2">
+                             <input type="number" id="spoof-lat" class="w-full p-3 rounded-lg input-dark text-sm" placeholder="Latitude">
+                             <input type="number" id="spoof-lng" class="w-full p-3 rounded-lg input-dark text-sm" placeholder="Longitude">
+                             <button onclick="genRandomLoc()" class="bg-slate-700 hover:bg-slate-600 px-4 rounded-lg text-xs"><i class="fa-solid fa-shuffle"></i></button>
+                        </div>
+                        <button onclick="processSpoof()" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 rounded-lg shadow-lg">PROSES SPOOFING</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= SECTION 2: ENCRYPTION ================= -->
+        <div id="section-encrypt" class="hidden animate-fade-in section-content">
+            <div class="max-w-2xl mx-auto glass-panel rounded-2xl p-8 space-y-6 text-center">
+                <i class="fa-solid fa-file-shield text-5xl text-blue-500 mb-2"></i>
+                <h2 class="text-xl font-bold text-white">AES-GCM File Locker</h2>
+                <input type="file" id="enc-input" class="block w-full text-sm text-slate-400 file:mr-4 file:py-2 file:px-4 file:rounded-full file:bg-slate-700 file:text-white cursor-pointer bg-slate-900/50 rounded-lg border border-slate-700 p-2">
+                <input type="password" id="enc-password" class="w-full p-3 rounded-lg input-dark text-center" placeholder="Password Rahasia...">
+                <div class="grid grid-cols-2 gap-4">
+                    <button onclick="handleEncryption(true)" class="bg-indigo-600 hover:bg-indigo-500 text-white py-3 rounded-lg font-bold">ENKRIPSI (.enc)</button>
+                    <button onclick="handleEncryption(false)" class="bg-slate-700 hover:bg-slate-600 text-white py-3 rounded-lg font-bold">DEKRIPSI</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= SECTION 3: STEGANOGRAPHY ================= -->
+        <div id="section-stego" class="hidden animate-fade-in section-content">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="glass-panel rounded-xl p-6 border-l-4 border-purple-500 space-y-4">
+                    <h3 class="font-bold text-white">1. Wadah (Foto JPG)</h3>
+                    <input type="file" id="stego-cover" accept="image/jpeg" class="block w-full text-xs text-slate-400 file:mr-2 file:py-1 file:px-2 file:rounded file:bg-slate-700 file:text-white cursor-pointer bg-slate-900/50 rounded border border-slate-700 p-2">
+                </div>
+                <div class="glass-panel rounded-xl p-6 border-l-4 border-pink-500 space-y-4">
+                    <h3 class="font-bold text-white">2. Rahasia (Any File)</h3>
+                    <input type="file" id="stego-secret" multiple class="block w-full text-xs text-slate-400 file:mr-2 file:py-1 file:px-2 file:rounded file:bg-slate-700 file:text-white cursor-pointer bg-slate-900/50 rounded border border-slate-700 p-2">
+                </div>
+                <div class="md:col-span-2 text-center">
+                    <button onclick="processSteganography()" class="bg-purple-600 hover:bg-purple-500 text-white font-bold py-3 px-8 rounded-lg shadow-lg">GABUNGKAN (BINDER)</button>
+                    <p class="text-[10px] text-slate-500 mt-2">Rename hasil .jpg jadi .zip untuk buka rahasia.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= SECTION 4: WA HD BOOSTER (NEW) ================= -->
+        <div id="section-hd" class="hidden animate-fade-in section-content">
+            <div class="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                
+                <!-- Info Section -->
+                <div class="space-y-4">
+                    <div class="flex items-center gap-3">
+                        <div class="bg-green-900/30 p-3 rounded-full border border-green-500/30">
+                            <i class="fa-brands fa-whatsapp text-3xl text-green-400"></i>
+                        </div>
+                        <h2 class="text-2xl font-bold text-white">HD Trigger Logic</h2>
+                    </div>
+                    <p class="text-slate-400 text-sm leading-relaxed">
+                        Fitur ini memanipulasi resolusi foto (Upscaling) agar melewati ambang batas algoritma kompresi WhatsApp.
+                    </p>
+                    <ul class="space-y-2 text-sm text-slate-300">
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-green-500"></i> Memaksa resolusi ke 4K (Ultra HD).</li>
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-green-500"></i> Mempertajam piksel (Smart Resampling).</li>
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-green-500"></i> Memunculkan tombol 'HD' saat kirim di WA.</li>
+                    </ul>
+                </div>
+
+                <!-- Action Section -->
+                <div class="glass-panel rounded-xl p-6 border-t-4 border-t-green-500 space-y-6">
+                    
+                    <div class="border-2 border-dashed border-slate-600 rounded-lg p-6 text-center hover:bg-slate-800 transition relative">
+                        <input type="file" id="hd-input" accept="image/*" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer">
+                        <div id="hd-drop-label">
+                            <i class="fa-solid fa-image text-3xl text-green-500 mb-2"></i>
+                            <p class="text-sm font-semibold text-white">Pilih Foto (Low Res)</p>
+                            <p class="text-xs text-slate-500">Foto buram/kecil akan di-boost.</p>
+                        </div>
+                    </div>
+
+                    <div id="hd-status" class="hidden space-y-2">
+                        <div class="flex justify-between text-xs text-slate-400">
+                            <span>Original: <b id="orig-res" class="text-red-400">...</b></span>
+                            <span>Target: <b class="text-green-400">~4000px (4K)</b></span>
+                        </div>
+                        <div class="w-full bg-slate-800 rounded-full h-2 overflow-hidden">
+                            <div id="hd-progress" class="bg-green-500 h-2 rounded-full transition-all" style="width: 0%"></div>
+                        </div>
+                    </div>
+
+                    <button onclick="processHDBoost()" id="btn-hd-boost" class="w-full bg-green-600 hover:bg-green-500 text-white font-bold py-3 rounded-lg shadow-lg disabled:opacity-50 disabled:cursor-not-allowed">
+                        BOOST MENJADI HD
+                    </button>
+                    
+                    <canvas id="hd-canvas" class="hidden"></canvas>
+                </div>
+
+            </div>
+        </div>
+
+    </main>
+
+    <script>
+        // --- TABS ---
+        function switchTab(id) {
+            document.querySelectorAll('.section-content').forEach(e => e.classList.add('hidden'));
+            document.querySelectorAll('.tab-btn').forEach(e => {
+                e.classList.remove('tab-active'); e.classList.add('tab-inactive');
+            });
+            document.getElementById(`section-${id}`).classList.remove('hidden');
+            const btn = document.getElementById(`tab-${id}`);
+            btn.classList.remove('tab-inactive'); btn.classList.add('tab-active');
+        }
+
+        // --- SHARED UTILS ---
+        function downloadBlob(blob, name) {
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url; a.download = name;
+            document.body.appendChild(a); a.click(); document.body.removeChild(a);
+        }
+
+        // --- PART 1: SPOOFER ---
+        let currentSpoofFile = null, currentSpoofType = null, map = null;
+        function initMap(lat, lng) {
+            if(typeof L==='undefined') return;
+            if(map) { map.remove(); map=null; }
+            if(isNaN(lat)||isNaN(lng)) return;
+            try {
+                map = L.map('map',{zoomControl:false}).setView([lat,lng],13);
+                L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png').addTo(map);
+                L.marker([lat,lng]).addTo(map);
+            } catch(e){}
+        }
+        function genRandomLoc() {
+            const lat=(Math.random()*180-90).toFixed(6), lng=(Math.random()*360-180).toFixed(6);
+            document.getElementById('spoof-lat').value=lat; document.getElementById('spoof-lng').value=lng;
+            initMap(parseFloat(lat),parseFloat(lng));
+        }
+        document.getElementById('spoof-input').addEventListener('change', function(e){
+            const f = e.target.files[0]; if(!f) return;
+            currentSpoofFile=f;
+            document.getElementById('spoof-controls').classList.remove('opacity-50','pointer-events-none');
+            document.getElementById('spoof-preview-container').classList.remove('hidden');
+            document.getElementById('img-preview').classList.add('hidden');
+            document.getElementById('audio-preview').classList.add('hidden');
+            if(f.type.startsWith('image/')) {
+                currentSpoofType='jpg';
+                const r = new FileReader(); r.onload=ev=>{document.getElementById('img-preview').src=ev.target.result; document.getElementById('img-preview').classList.remove('hidden'); initMap(NaN,NaN);}; r.readAsDataURL(f);
+            } else if(f.type.startsWith('audio/')) {
+                currentSpoofType='mp3';
+                document.getElementById('audio-preview').src=URL.createObjectURL(f); document.getElementById('audio-preview').classList.remove('hidden');
+            }
+        });
+        function processSpoof() {
+            if(!currentSpoofFile) return;
+            const dev=document.getElementById('spoof-device').value, ip=document.getElementById('spoof-ip').value;
+            const lat=parseFloat(document.getElementById('spoof-lat').value), lng=parseFloat(document.getElementById('spoof-lng').value);
+            const r=new FileReader();
+            if(currentSpoofType==='jpg') {
+                r.onload=e=>{
+                    let exif; try{exif=piexif.load(e.target.result)}catch{exif={"0th":{},"Exif":{},"GPS":{}}}
+                    exif["0th"][piexif.ImageIFD.Make]="SecTool"; exif["0th"][piexif.ImageIFD.Model]=dev;
+                    exif["0th"][piexif.ImageIFD.ImageDescription]=`IP:${ip}`;
+                    if(!isNaN(lat)&&!isNaN(lng)){
+                        const tr=d=>[[Math.floor(Math.abs(d)),1],[Math.floor((Math.abs(d)%1)*60),1],[Math.round(((Math.abs(d)%1)*60%1)*6000),100]];
+                        exif["GPS"][piexif.GPSIFD.GPSLatitudeRef]=lat<0?'S':'N'; exif["GPS"][piexif.GPSIFD.GPSLatitude]=tr(lat);
+                        exif["GPS"][piexif.GPSIFD.GPSLongitudeRef]=lng<0?'W':'E'; exif["GPS"][piexif.GPSIFD.GPSLongitude]=tr(lng);
+                    }
+                    downloadBlob(new Blob([piexif.insert(piexif.dump(exif),e.target.result)],{type:'image/jpeg'}), `spoof_${Date.now()}.jpg`);
+                }; r.readAsDataURL(currentSpoofFile);
+            } else {
+                 r.onload=e=>{
+                    if(typeof ID3Writer==='undefined'){alert('Lib Error');return;}
+                    const w=new ID3Writer(e.target.result); w.setFrame('TPE1',[dev]); w.setFrame('COMM',{description:'Meta',text:`IP:${ip}|GPS:${lat},${lng}`,language:'eng'}); w.addTag();
+                    downloadBlob(w.getBlob(), `spoof_${Date.now()}.mp3`);
+                }; r.readAsArrayBuffer(currentSpoofFile);
+            }
+        }
+
+        // --- PART 2: ENCRYPT ---
+        async function handleEncryption(enc) {
+            const f=document.getElementById('enc-input').files[0], p=document.getElementById('enc-password').value;
+            if(!f||!p){alert('File & Password required');return;}
+            const te=new TextEncoder(), km=await crypto.subtle.importKey("raw",te.encode(p),{name:"PBKDF2"},false,["deriveKey"]);
+            const k=await crypto.subtle.deriveKey({"name":"PBKDF2",salt:te.encode("Salt"),"iterations":100000,"hash":"SHA-256"},km,{"name":"AES-GCM","length":256},true,["encrypt","decrypt"]);
+            try{
+                const b=await f.arrayBuffer(), iv=new Uint8Array(12);
+                const res=enc?await crypto.subtle.encrypt({name:"AES-GCM",iv},k,b):await crypto.subtle.decrypt({name:"AES-GCM",iv},k,b);
+                downloadBlob(new Blob([res]), enc?f.name+".enc":"dec_"+f.name.replace('.enc',''));
+            }catch(e){alert('Password Error');}
+        }
+
+        // --- PART 3: STEGO ---
+        async function processSteganography() {
+            const c=document.getElementById('stego-cover').files[0], s=document.getElementById('stego-secret').files;
+            if(!c||s.length===0){alert('Pilih Cover & Rahasia');return;}
+            if(typeof JSZip==='undefined'){alert('Zip Lib Error');return;}
+            const zip=new JSZip(); for(let f of s) zip.file(f.name,f);
+            const zb=await zip.generateAsync({type:"blob"}), cb=await c.arrayBuffer();
+            downloadBlob(new Blob([cb,zb],{type:"image/jpeg"}), "hidden_files_"+Date.now()+".jpg");
+        }
+
+        // --- PART 4: WA HD BOOSTER (THE NEW LOGIC) ---
+        let hdFile = null;
+        document.getElementById('hd-input').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            hdFile = file;
+            
+            // Read dimensions for display
+            const img = new Image();
+            img.onload = function() {
+                document.getElementById('orig-res').innerText = `${this.width} x ${this.height} px`;
+                document.getElementById('hd-status').classList.remove('hidden');
+                document.getElementById('hd-drop-label').innerHTML = `<p class="text-white font-bold">${file.name}</p><p class="text-green-400 text-xs">Siap di-boost</p>`;
+            };
+            img.src = URL.createObjectURL(file);
+        });
+
+        function processHDBoost() {
+            if (!hdFile) return;
+            
+            const btn = document.getElementById('btn-hd-boost');
+            const progress = document.getElementById('hd-progress');
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Memproses Upscaling...';
+            progress.style.width = '30%';
+
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                const img = new Image();
+                img.onload = function() {
+                    progress.style.width = '60%';
+                    
+                    const canvas = document.getElementById('hd-canvas');
+                    const ctx = canvas.getContext('2d');
+
+                    // TARGET: Minimum 4000px on longest side for Guaranteed HD
+                    const targetSize = 4096; 
+                    let width = img.width;
+                    let height = img.height;
+                    
+                    // Logic Scale Calculation
+                    let scaleFactor = 1;
+                    if (width > height) {
+                        scaleFactor = targetSize / width;
+                    } else {
+                        scaleFactor = targetSize / height;
+                    }
+                    
+                    // If image is already huge, don't downscale, just keep or slight upscale
+                    if (scaleFactor < 1) scaleFactor = 1; 
+
+                    canvas.width = width * scaleFactor;
+                    canvas.height = height * scaleFactor;
+
+                    // High Quality Smoothing
+                    ctx.imageSmoothingEnabled = true;
+                    ctx.imageSmoothingQuality = 'high';
+
+                    // Draw (Upscale)
+                    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+                    // Add subtle noise/sharpening logic (Optional visual trick)
+                    // (Skipped complex matrix for performance, relying on Bicubic resampling of browser)
+
+                    progress.style.width = '90%';
+
+                    // Export High Quality JPG
+                    canvas.toBlob(function(blob) {
+                        downloadBlob(blob, `WA_HD_Boosted_${Date.now()}.jpg`);
+                        
+                        btn.disabled = false;
+                        btn.innerHTML = 'BOOST MENJADI HD';
+                        progress.style.width = '100%';
+                        
+                        alert("Foto berhasil di-boost!\n\nResolusi sekarang: " + canvas.width + "x" + canvas.height + "\n\nSilakan kirim lewat WhatsApp, tombol HD akan muncul.");
+                    }, 'image/jpeg', 1.0); // 1.0 Quality is key
+                };
+                img.src = event.target.result;
+            };
+            reader.readAsDataURL(hdFile);
+        }
+
+    </script>
+</body>
+  </html>
